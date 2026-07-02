@@ -192,22 +192,22 @@ resource "aws_lb_listener_rule" "main" {
 
     condition {
         host_header {
-            values = ["catalogue.backend-alb-${var.environment}.${var.domain_name}"]
+            values = [local.host_header]
         }
     }
 }
 
-resource "terraform_data" "catalogue_delete" {
-    triggers_replace = [
-        aws_instance.catalogue.id 
-    ]
-    depends_on = [aws_autoscaling_policy.catalogue]
+# resource "terraform_data" "catalogue_delete" {
+#     triggers_replace = [
+#         aws_instance.catalogue.id 
+#     ]
+#     depends_on = [aws_autoscaling_policy.catalogue]
 
-    # executes where terraform is running
-    provisioner "local-exec" {
-    command = "aws ec2 terminate-instances --instance-ids ${aws_instance.catalogue.id}"
-    }
+#     # executes where terraform is running
+#     provisioner "local-exec" {
+#     command = "aws ec2 terminate-instances --instance-ids ${aws_instance.catalogue.id}"
+#     }
 
-    # for single command use command module 
-    # for multiple command use inline 
-}
+#     # for single command use command module 
+#     # for multiple command use inline 
+# }
