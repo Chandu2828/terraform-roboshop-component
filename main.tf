@@ -122,7 +122,7 @@ resource "aws_lb_target_group" "main" {
 
 resource "aws_autoscaling_group" "main"{
     name                        = "${local.common_name}"
-    max_size                    = 10
+    max_size                    = 6
     min_size                    = 1
     health_check_grace_period   = 120
     health_check_type           = "ELB"
@@ -197,15 +197,15 @@ resource "aws_lb_listener_rule" "main" {
     }
 }
 
-resource "terraform_data" "catalogue_delete" {
+resource "terraform_data" "main_delete" {
     triggers_replace = [
-        aws_instance.catalogue.id 
+        aws_instance.main.id 
     ]
-    depends_on = [aws_autoscaling_policy.catalogue]
+    depends_on = [aws_autoscaling_policy.main]
 
     # executes where terraform is running
     provisioner "local-exec" {
-    command = "aws ec2 terminate-instances --instance-ids ${aws_instance.catalogue.id}"
+    command = "aws ec2 terminate-instances --instance-ids ${aws_instance.main.id}"
     }
 
     # for single command use command module 
