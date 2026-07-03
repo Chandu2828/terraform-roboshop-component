@@ -167,7 +167,7 @@ resource "aws_autoscaling_group" "main"{
     }
 }
 
-resource "aws_autoscaling_policy" "catalogue" {
+resource "aws_autoscaling_policy" "main" {
     autoscaling_group_name      = aws_autoscaling_group.main.name 
     name                        = "${local.common_name}"
     policy_type                 = "TargetTrackingScaling"
@@ -197,17 +197,17 @@ resource "aws_lb_listener_rule" "main" {
     }
 }
 
-# resource "terraform_data" "catalogue_delete" {
-#     triggers_replace = [
-#         aws_instance.catalogue.id 
-#     ]
-#     depends_on = [aws_autoscaling_policy.catalogue]
+resource "terraform_data" "catalogue_delete" {
+    triggers_replace = [
+        aws_instance.catalogue.id 
+    ]
+    depends_on = [aws_autoscaling_policy.catalogue]
 
-#     # executes where terraform is running
-#     provisioner "local-exec" {
-#     command = "aws ec2 terminate-instances --instance-ids ${aws_instance.catalogue.id}"
-#     }
+    # executes where terraform is running
+    provisioner "local-exec" {
+    command = "aws ec2 terminate-instances --instance-ids ${aws_instance.catalogue.id}"
+    }
 
-#     # for single command use command module 
-#     # for multiple command use inline 
-# }
+    # for single command use command module 
+    # for multiple command use inline 
+}
