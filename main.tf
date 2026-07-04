@@ -122,11 +122,11 @@ resource "aws_lb_target_group" "main" {
 
 resource "aws_autoscaling_group" "main"{
     name                        = "${local.common_name}"
-    max_size                    = 6
+    max_size                    = 10
     min_size                    = 1
     health_check_grace_period   = 120
     health_check_type           = "ELB"
-    desired_capacity            = 2
+    desired_capacity            = 1
     force_delete                = false
 
     launch_template {
